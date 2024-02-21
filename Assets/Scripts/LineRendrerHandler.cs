@@ -1,6 +1,7 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(LineRenderer))]
@@ -66,7 +67,11 @@ public class LineRendrerHandler : MonoBehaviour
                 _isDraging = true;
                 Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mousePosition.z = 0;
-                _lineRenderer.SetPosition(0, mousePosition);
+                Vector2 ObjecctPosition = hit1.collider.gameObject.transform.position;
+                Debug.Log(ObjecctPosition);
+                Vector3 fixedPosition =new Vector3 (ObjecctPosition.x, ObjecctPosition.y, 0);
+                Debug.Log(fixedPosition);
+                _lineRenderer.SetPosition(0, fixedPosition);
             }
         }
         if (_isDraging) 
@@ -85,14 +90,15 @@ public class LineRendrerHandler : MonoBehaviour
             _endPoint = Vector3.zero;
             //Debug.Log(hit2.collider);
             //Debug.Log(hit2.collider.gameObject.transform.parent.transform.parent.name);
-            if (hit2.collider != null && hit2.collider.gameObject.transform.parent.transform.parent.name == "NamesContainer" )
+            if (hit2.collider != null && hit2.collider.gameObject.transform.parent.transform.parent.transform.parent.name == "NamesContainer" )
             {
-                Debug.Log(hit2.collider);
-                Debug.Log(hit2.collider.gameObject.transform.parent.transform.parent.name);
+                //Debug.Log(hit2.collider);
+                //Debug.Log(hit2.collider.gameObject.transform.parent.transform.parent.name);
                 toggleCanDrag(false);
-                if (hit2.collider.name == hit1.collider.name )
+                if (hit2.collider.gameObject.transform.parent.name == hit1.collider.gameObject.transform.parent.name)
                 {
                     _verif = true;
+                    Debug.Log("shiiiiha");
                 }
             }
             else
@@ -102,6 +108,7 @@ public class LineRendrerHandler : MonoBehaviour
             _lineRenderer.positionCount = 2;
 
         }
+        
     }
 
 }
